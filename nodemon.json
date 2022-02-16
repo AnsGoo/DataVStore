@@ -1,0 +1,21 @@
+{
+    "verbose": true,
+    "restartable":"rs",
+    "ignore": [
+        "*.test.js", 
+        "fixtures/*",
+        "./node_modules/",
+        "./.git/",
+        "./dist/",
+        "./.vscode/",
+        "./migration/",
+        "public"
+    ],
+    "exec": "ts-node ./src/server.ts",
+    "watch": [
+        "./src/",
+        "./apis/"
+    ],
+    "ext": "js,json,ts,yaml,yml"
+  }
+  

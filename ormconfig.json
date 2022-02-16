@@ -1,0 +1,18 @@
+{
+  "type": "mysql",
+  "host": "10.10.8.252",
+  "port": 3306,
+  "username": "root",
+  "password": "marco@123",
+  "database": "dashboard",
+  "synchronize": false,
+  "migrationRun": true,
+  "entities": ["dist/models/entity/*.js"],
+  "subscribers": ["dist/models/subscriber/*.js"],
+  "migrations": ["dist/models/migration/*.js"],
+  "cli": {
+    "entitiesDir": "dist/models/entity",
+    "migrationsDir": "src/models/migration",
+    "subscribersDir": "dist/models/subscriber"
+  }
+}

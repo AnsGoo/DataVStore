@@ -1,0 +1,32 @@
+@host = localhost:3000
+### 登录
+# @login = /login
+POST http://{{host}}/login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "admin"
+}
+
+### 创建系统配置
+POST http://{{host}}/system
+Content-Type: application/json
+    
+{
+    "name": "alertUrl",
+    "desc": "系统配置",
+    "tag": "系统配置",
+    "config": {
+        "url": "http://www.baidu.com"
+    }
+}
+
+### 查询系统配置
+GET http://{{host}}/system
+
+### 查询所有系统配置
+GET http://{{host}}/systemAll
+
+### 删除系统配置
+DELETE http://{{host}}/system/3

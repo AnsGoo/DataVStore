@@ -1,0 +1,1 @@
+export type BooleanType = 'false'|'true'|0|1|true|false

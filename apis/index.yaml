@@ -1,0 +1,456 @@
+swagger: "2.0"
+info:
+  description: "大屏API"
+  version: "1.0.0"
+  title: "DataV API"
+host: "192.168.10.111:3000"
+tags:
+- name: "Auth"
+  description: "用户认证"
+- name: "Page"
+  description: "大屏页面接口"
+- name: "Pages"
+  description: "大屏页面列表"
+- name: "File"
+  description: "资源文件"
+- name: "Home"
+  description: "主页接口"
+- name: "Cache"
+  description: "缓存数据"
+- name: "Permission"
+  description: "权限"
+schemes:
+- "http"
+paths:
+  /login:
+    post:
+      tags:
+      - "Auth"
+      summary: "用户登录"
+      description: "用户登录"
+      operationId: "login"
+      consumes:
+      - "multipart/form-data"
+      - "application/x-www-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "formData"
+        description: "用户名"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "formData"
+        description: "密码"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "认证成功"
+          schema:
+            $ref: "#/definitions/authSuccess"
+        "400":
+          description: "认证失败"
+          schema:
+            $ref: "#/definitions/authFail"
+  /pages:
+    get:
+      tags:
+      - "Pages"
+      summary: "获取页面列表"
+      description: "返回一个页面列表对象"
+      operationId: "getPage"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "query"
+          name: "name"
+          type: "string"
+          description: "页面名称"
+          required: false
+        - in: "query"
+          name: "author"
+          type: "string"
+          description: "创建者"
+          required: false
+        - in: "query"
+          name: "id"
+          type: "string"
+          description: "页面ID"
+          required: false
+      responses:
+        "200":
+          description: "获取成功"
+          schema:
+            type: "array"
+            items:
+              $ref: "#definitions/Page"
+    post:
+      tags:
+      - "Pages"
+      summary: "创建页面"
+      description: "返回页面信息"
+      operationId: "createPage"
+      consumes:
+      - "multipart/form-data"
+      - "application/x-www-urlencoded"
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "formData"
+        description: "页面名称"
+        required: true
+        type: "string"
+      - in: "formData"
+        name: "canvasStyle"
+        description: "页面配置"
+        required: true
+        type: "object"
+      - in: "formData"
+        name: "canvasData"
+        description: "页面数据"
+        required: true
+        type: "object"
+      - in: "formData"
+        name: "isHome"
+        description: "是否主页"
+        required: false
+        type: "boolean"
+        default: false
+      - in: "formData"
+        name: "thumbnail"
+        description: "缩略图"
+        required: false
+        type: "file"
+      responses:
+        "201":
+          description:
+          schema:
+            type: "object"
+            $ref: "#definitions/Page"
+        "400":
+          description: "创建失败"
+      security:
+        - api_key: ['authorization']
+  /home:
+    get:
+      tags:
+      - "Home"
+      summary: "获取首页"
+      description: "返回一个首页页面对象"
+      operationId: "getHomePage"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "页面对象"
+          $ref: "#definitions/Page"
+        "404":
+          description: "page not found"
+  /home/{id}:
+    put:
+      tags:
+      - "Home"
+      summary: "设置首页"
+      description: "返回一个首页页面对象"
+      operationId: "getHomePage"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "页面id"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "页面对象"
+          $ref: "#definitions/Page"
+        "404":
+          description: "page not found"
+      security:
+        - api_key: ['authorization']
+  /permission/{id}:
+    put:
+      tags:
+      - "Permission"
+      summary: "设置页面权限"
+      description: "返回一个页面对象"
+      operationId: "setPagePermission"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "页面id"
+        required: true
+        type: "string"
+      - name: "permissions"
+        in: "formData"
+        description: "页面权限"
+        required: true
+        type: "array"
+        items: 
+          type: "string"
+      responses:
+        "200":
+          description: "页面对象"
+          $ref: "#definitions/Page"
+        "404":
+          description: "page not found"
+      security:
+        - api_key: ['authorization']
+  /pages/{id}:
+    delete:
+      tags:
+      - "Page"
+      summary: "删除页面"
+      description: "删除页面"
+      operationId: "deletePage"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "需要被删除的页面ID"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "delete successfully"
+        "400":
+          description: "Invalid id supplied"
+        "404":
+          description: "page not found"
+      security:
+        - api_key: ['authorization']
+    get:
+      tags:
+      - "Page"
+      summary: "获取页面"
+      description: "获取页面"
+      operationId: "getPage"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "页面ID"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "页面对象"
+          $ref: "#definitions/Page"
+        "404":
+          description: "page not found"
+    put:
+      tags:
+      - "Page"
+      summary: "更新页面"
+      description: "返回页面信息"
+      operationId: "createPage"
+      consumes:
+      - "multipart/form-data"
+      - "application/x-www-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "页面id"
+        required: true
+        type: "string"
+      - name: "name"
+        in: "formData"
+        description: "页面名称"
+        required: false
+        type: "string"
+      - in: "formData"
+        name: "canvasStyle"
+        description: "页面配置"
+        required: true
+        type: "object"
+      - in: "formData"
+        name: "canvasData"
+        description: "页面数据"
+        required: true
+        type: "object"
+      - in: "formData"
+        name: "isHome"
+        description: "是否主页"
+        required: false
+        type: "boolean"
+        default: false
+      - in: "formData"
+        name: "thumbnail"
+        description: "缩略图"
+        required: false
+        type: "file"
+      responses:
+        "202":
+          description:
+          schema:
+            type: "object"
+            $ref: "#definitions/Page"
+        "400":
+          description: "更新失败"
+      security:
+        - api_key: ['authorization']
+  /upload:
+    post:
+      tags:
+        - "File"
+      summary: "上传文件"
+      description: "上传文件"
+      operationId: "uploadFile"
+      consumes:
+        - "multipart/form-data"
+        - "application/x-www-urlencoded"
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "file"
+          in: "formData"
+          description: "上传文件"
+          required: true
+          type: "file"
+      responses:
+        "200":
+          description: "上传成功的地址"
+          schema:
+            type: "object"
+            $ref: "#definitions/File"
+        "400":
+          description: "更新失败"
+  /files:
+    get:
+      tags:
+        - "File"
+      summary: "获取资源文件列表"
+      description: "资源文件列表"
+      operationId: "getFile"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "name"
+          in: "query"
+          description: "文件名称"
+          required: false
+          type: "string"
+      responses:
+        "200":
+          description: "文件资源列表"
+          schema:
+            type: "array"
+            items:
+              $ref: "#definitions/File"
+        "400":
+          description: "更新失败"
+  /caches:
+    get:
+      tags:
+        - "Cache"
+      summary: "获取缓存数据"
+      description: "缓存数据列表"
+      operationId: "getCacheData"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "start"
+          in: "query"
+          description: "开始时间"
+          required: true
+          type: "string"
+          format: "date-time"
+        - name: "end"
+          in: "query"
+          description: "结束时间"
+          required: true
+          type: "string"
+          format: "date-time"
+      responses:
+        "200":
+          description: "缓存"
+          schema:
+            type: "array"
+            items:
+              $ref: "#definitions/Cache"
+        "400":
+          description: "获取失败"
+securityDefinitions:
+  api_key:
+    type: "apiKey"
+    name: "authorization"
+    in: "header"
+definitions:
+  Page:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        format: "uuid"
+      name:
+        type: "string"
+        required: true
+      thumbnail:
+        type: "string"
+      isHome:
+        type: "boolean"
+      isDelete:
+        type: "boolean"
+      canvasData:
+        type: "object"
+        required: true
+      canvasStyle:
+        type: "object"
+        required: true
+      author:
+        type: "string"
+      createTime:
+        type: "string"
+        format: "date-time"
+      allowed:
+        type: "string"
+  File:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      name:
+        type: "string"
+        required: true
+      md5:
+        type: "string"
+      url:
+        type: "string"
+      createTime:
+        type: "string"
+        format: "date-time"
+  Cache:
+    type: "object"
+    properties:
+      time:
+        type: "string"
+        format: "date-time"
+      non:
+        type: "string"
+      value:
+        type: "integer"
+  authSuccess:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+      token:
+        type: "string"
+  authFail:
+    type: "string"

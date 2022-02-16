@@ -1,0 +1,37 @@
+[
+    {
+        "username":"admin",
+        "password":"admin@marco",
+        "permissions":[
+            "Pages",
+            "EditePage",
+            "Settings",
+            "PerviewPage",
+            "Alert"
+        ]
+        
+    },
+    {
+        "username":"ops",
+        "password":"Operations@marco",
+        "permissions":[
+            "CreatePage",
+            "EditePage",
+            "PerviewPage",
+            "Pages",
+            "Settings",
+            "Alert"
+        ] 
+    },
+    {
+        "username":"super",
+        "password":"super@marco",
+        "permissions":[
+            "CreatePage",
+            "EditePage",
+            "PerviewPage",
+            "Pages",
+            "Settings"
+        ] 
+    }
+]
