@@ -5,46 +5,44 @@ info:
   title: "DataV API"
 host: "192.168.10.111:3000"
 tags:
-- name: "Auth"
-  description: "用户认证"
-- name: "Page"
-  description: "大屏页面接口"
-- name: "Pages"
-  description: "大屏页面列表"
-- name: "File"
-  description: "资源文件"
-- name: "Home"
-  description: "主页接口"
-- name: "Cache"
-  description: "缓存数据"
-- name: "Permission"
-  description: "权限"
+  - name: "Auth"
+    description: "用户认证"
+  - name: "Page"
+    description: "大屏页面接口"
+  - name: "Pages"
+    description: "大屏页面列表"
+  - name: "File"
+    description: "资源文件"
+  - name: "Home"
+    description: "主页接口"
+  - name: "Permission"
+    description: "权限"
 schemes:
-- "http"
+  - "http"
 paths:
   /login:
     post:
       tags:
-      - "Auth"
+        - "Auth"
       summary: "用户登录"
       description: "用户登录"
       operationId: "login"
       consumes:
-      - "multipart/form-data"
-      - "application/x-www-urlencoded"
+        - "multipart/form-data"
+        - "application/x-www-urlencoded"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "username"
-        in: "formData"
-        description: "用户名"
-        required: true
-        type: "string"
-      - name: "password"
-        in: "formData"
-        description: "密码"
-        required: true
-        type: "string"
+        - name: "username"
+          in: "formData"
+          description: "用户名"
+          required: true
+          type: "string"
+        - name: "password"
+          in: "formData"
+          description: "密码"
+          required: true
+          type: "string"
       responses:
         "200":
           description: "认证成功"
@@ -57,12 +55,12 @@ paths:
   /pages:
     get:
       tags:
-      - "Pages"
+        - "Pages"
       summary: "获取页面列表"
       description: "返回一个页面列表对象"
       operationId: "getPage"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
         - in: "query"
           name: "name"
@@ -88,43 +86,43 @@ paths:
               $ref: "#definitions/Page"
     post:
       tags:
-      - "Pages"
+        - "Pages"
       summary: "创建页面"
       description: "返回页面信息"
       operationId: "createPage"
       consumes:
-      - "multipart/form-data"
-      - "application/x-www-urlencoded"
-      - "application/json"
+        - "multipart/form-data"
+        - "application/x-www-urlencoded"
+        - "application/json"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "name"
-        in: "formData"
-        description: "页面名称"
-        required: true
-        type: "string"
-      - in: "formData"
-        name: "canvasStyle"
-        description: "页面配置"
-        required: true
-        type: "object"
-      - in: "formData"
-        name: "canvasData"
-        description: "页面数据"
-        required: true
-        type: "object"
-      - in: "formData"
-        name: "isHome"
-        description: "是否主页"
-        required: false
-        type: "boolean"
-        default: false
-      - in: "formData"
-        name: "thumbnail"
-        description: "缩略图"
-        required: false
-        type: "file"
+        - name: "name"
+          in: "formData"
+          description: "页面名称"
+          required: true
+          type: "string"
+        - in: "formData"
+          name: "canvasStyle"
+          description: "页面配置"
+          required: true
+          type: "object"
+        - in: "formData"
+          name: "canvasData"
+          description: "页面数据"
+          required: true
+          type: "object"
+        - in: "formData"
+          name: "isHome"
+          description: "是否主页"
+          required: false
+          type: "boolean"
+          default: false
+        - in: "formData"
+          name: "thumbnail"
+          description: "缩略图"
+          required: false
+          type: "file"
       responses:
         "201":
           description:
@@ -134,16 +132,16 @@ paths:
         "400":
           description: "创建失败"
       security:
-        - api_key: ['authorization']
+        - api_key: ["authorization"]
   /home:
     get:
       tags:
-      - "Home"
+        - "Home"
       summary: "获取首页"
       description: "返回一个首页页面对象"
       operationId: "getHomePage"
       produces:
-      - "application/json"
+        - "application/json"
       responses:
         "200":
           description: "页面对象"
@@ -153,47 +151,17 @@ paths:
   /home/{id}:
     put:
       tags:
-      - "Home"
+        - "Home"
       summary: "设置首页"
       description: "返回一个首页页面对象"
       operationId: "getHomePage"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "id"
-        in: "path"
-        description: "页面id"
-        required: true
-        type: "string"
-      responses:
-        "200":
-          description: "页面对象"
-          $ref: "#definitions/Page"
-        "404":
-          description: "page not found"
-      security:
-        - api_key: ['authorization']
-  /permission/{id}:
-    put:
-      tags:
-      - "Permission"
-      summary: "设置页面权限"
-      description: "返回一个页面对象"
-      operationId: "setPagePermission"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "id"
-        in: "path"
-        description: "页面id"
-        required: true
-        type: "string"
-      - name: "permissions"
-        in: "formData"
-        description: "页面权限"
-        required: true
-        type: "array"
-        items: 
+        - name: "id"
+          in: "path"
+          description: "页面id"
+          required: true
           type: "string"
       responses:
         "200":
@@ -202,22 +170,52 @@ paths:
         "404":
           description: "page not found"
       security:
-        - api_key: ['authorization']
+        - api_key: ["authorization"]
+  /permission/{id}:
+    put:
+      tags:
+        - "Permission"
+      summary: "设置页面权限"
+      description: "返回一个页面对象"
+      operationId: "setPagePermission"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "页面id"
+          required: true
+          type: "string"
+        - name: "permissions"
+          in: "formData"
+          description: "页面权限"
+          required: true
+          type: "array"
+          items:
+            type: "string"
+      responses:
+        "200":
+          description: "页面对象"
+          $ref: "#definitions/Page"
+        "404":
+          description: "page not found"
+      security:
+        - api_key: ["authorization"]
   /pages/{id}:
     delete:
       tags:
-      - "Page"
+        - "Page"
       summary: "删除页面"
       description: "删除页面"
       operationId: "deletePage"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "id"
-        in: "path"
-        description: "需要被删除的页面ID"
-        required: true
-        type: "string"
+        - name: "id"
+          in: "path"
+          description: "需要被删除的页面ID"
+          required: true
+          type: "string"
       responses:
         "200":
           description: "delete successfully"
@@ -226,21 +224,21 @@ paths:
         "404":
           description: "page not found"
       security:
-        - api_key: ['authorization']
+        - api_key: ["authorization"]
     get:
       tags:
-      - "Page"
+        - "Page"
       summary: "获取页面"
       description: "获取页面"
       operationId: "getPage"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "id"
-        in: "path"
-        description: "页面ID"
-        required: true
-        type: "string"
+        - name: "id"
+          in: "path"
+          description: "页面ID"
+          required: true
+          type: "string"
       responses:
         "200":
           description: "页面对象"
@@ -249,47 +247,47 @@ paths:
           description: "page not found"
     put:
       tags:
-      - "Page"
+        - "Page"
       summary: "更新页面"
       description: "返回页面信息"
       operationId: "createPage"
       consumes:
-      - "multipart/form-data"
-      - "application/x-www-urlencoded"
+        - "multipart/form-data"
+        - "application/x-www-urlencoded"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "id"
-        in: "path"
-        description: "页面id"
-        required: true
-        type: "string"
-      - name: "name"
-        in: "formData"
-        description: "页面名称"
-        required: false
-        type: "string"
-      - in: "formData"
-        name: "canvasStyle"
-        description: "页面配置"
-        required: true
-        type: "object"
-      - in: "formData"
-        name: "canvasData"
-        description: "页面数据"
-        required: true
-        type: "object"
-      - in: "formData"
-        name: "isHome"
-        description: "是否主页"
-        required: false
-        type: "boolean"
-        default: false
-      - in: "formData"
-        name: "thumbnail"
-        description: "缩略图"
-        required: false
-        type: "file"
+        - name: "id"
+          in: "path"
+          description: "页面id"
+          required: true
+          type: "string"
+        - name: "name"
+          in: "formData"
+          description: "页面名称"
+          required: false
+          type: "string"
+        - in: "formData"
+          name: "canvasStyle"
+          description: "页面配置"
+          required: true
+          type: "object"
+        - in: "formData"
+          name: "canvasData"
+          description: "页面数据"
+          required: true
+          type: "object"
+        - in: "formData"
+          name: "isHome"
+          description: "是否主页"
+          required: false
+          type: "boolean"
+          default: false
+        - in: "formData"
+          name: "thumbnail"
+          description: "缩略图"
+          required: false
+          type: "file"
       responses:
         "202":
           description:
@@ -299,7 +297,7 @@ paths:
         "400":
           description: "更新失败"
       security:
-        - api_key: ['authorization']
+        - api_key: ["authorization"]
   /upload:
     post:
       tags:
@@ -353,39 +351,6 @@ paths:
               $ref: "#definitions/File"
         "400":
           description: "更新失败"
-  /caches:
-    get:
-      tags:
-        - "Cache"
-      summary: "获取缓存数据"
-      description: "缓存数据列表"
-      operationId: "getCacheData"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "start"
-          in: "query"
-          description: "开始时间"
-          required: true
-          type: "string"
-          format: "date-time"
-        - name: "end"
-          in: "query"
-          description: "结束时间"
-          required: true
-          type: "string"
-          format: "date-time"
-      responses:
-        "200":
-          description: "缓存"
-          schema:
-            type: "array"
-            items:
-              $ref: "#definitions/Cache"
-        "400":
-          description: "获取失败"
 securityDefinitions:
   api_key:
     type: "apiKey"
@@ -435,16 +400,6 @@ definitions:
       createTime:
         type: "string"
         format: "date-time"
-  Cache:
-    type: "object"
-    properties:
-      time:
-        type: "string"
-        format: "date-time"
-      non:
-        type: "string"
-      value:
-        type: "integer"
   authSuccess:
     type: "object"
     properties:

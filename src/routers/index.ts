@@ -14,9 +14,7 @@ import {
   setPagePermission
 } from '../controller/page';
 import { uploadFile, getFiles } from '../controller/file';
-import getCacheData from '../controller/data';
 import { RouterItem } from '../typer/router';
-import { SystemSetting, SystemSchem } from '../controller/system';
 
 class RouterFactory {
   public routers: RouterItem[] = []
@@ -142,48 +140,7 @@ const appRouters: RouterItem[] = [
     url: '/home/:id',
     action: setHomePage.action,
     login: true
-  },
-  {
-    name: getCacheData.name,
-    method: 'get',
-    url: '/caches',
-    action: getCacheData.action,
-  },
-  {
-    name: SystemSetting.getName,
-    method: 'get',
-    url: '/system',
-    action: SystemSetting.get,
-  },
-  {
-    name: SystemSetting.getAllName,
-    method: 'get',
-    url: '/systemAll',
-    action: SystemSetting.getAll,
-  },
-  {
-    name: SystemSetting.deleteName,
-    method: 'delete',
-    url: '/system/:id',
-    action: SystemSetting.delete,
-    login: true
-  },
-  {
-    name: SystemSetting.createName,
-    method: 'post',
-    url: '/system',
-    action: SystemSetting.create,
-    schema: SystemSchem.createSchema,
-    login: true
-  },
-  {
-    name: SystemSetting.updateName,
-    method: 'put',
-    url: '/system/:id',
-    action: SystemSetting.update,
-    schema: SystemSchem.updateSchema,
-    login: true
-  },
+  }
 ];
 
 export default new RouterFactory(appRouters);
